@@ -15,19 +15,10 @@ git workspace playground
 
 ## Usage
 
-### Prerequisites
-
 ```bash
+make build
+./bin/playground serve --address ":9090"
 ```
-
-### Commands
-
-```bash
-```
-
-
-
-## Settings
 
 
 
@@ -38,3 +29,5 @@ Project License can be found [here](LICENSE).
 
 
 ## Reference
+
+- [docker-webtop](https://github.com/linuxserver/docker-webtop)
