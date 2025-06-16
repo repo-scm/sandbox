@@ -1,0 +1,22 @@
+---
+builds:
+  - id: playground
+    env:
+      - CGO_ENABLED=0
+    goos:
+      - linux
+    goarch:
+      - amd64
+    dir: .
+    main: main.go
+    binary: playground
+    flags:
+      - -trimpath
+    ldflags: -s -w -X github.com/repo-scm/playground/cmd.BuildTime={{.Date}} -X github.com/repo-scm/playground/cmd.CommitID={{.ShortCommit}}
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - Merge pull request
+      - Merge branch
