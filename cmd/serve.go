@@ -37,9 +37,9 @@ func init() {
 }
 
 func runServe(_ context.Context, address string) error {
-	dockerManager, err := sandbox.NewSandbox()
+	box, err := sandbox.NewSandbox()
 	if err != nil {
-		return errors.Wrap(err, "failed to initialize docker manager\n")
+		return errors.Wrap(err, "failed to initialize sandbox\n")
 	}
 
 	gin.SetMode(gin.ReleaseMode)
@@ -51,12 +51,12 @@ func runServe(_ context.Context, address string) error {
 
 	api := r.Group("/api")
 	{
-		api.POST("/containers", dockerManager.CreateContainer)
-		api.GET("/containers", dockerManager.ListContainers)
-		api.POST("/containers/:id/start", dockerManager.StartContainer)
-		api.POST("/containers/:id/stop", dockerManager.StopContainer)
-		api.DELETE("/containers/:id", dockerManager.RemoveContainer)
-		api.GET("/containers/:id/logs", dockerManager.GetLogs)
+		api.POST("/containers", box.CreateContainer)
+		api.GET("/containers", box.ListContainers)
+		api.POST("/containers/:id/start", box.StartContainer)
+		api.POST("/containers/:id/stop", box.StopContainer)
+		api.DELETE("/containers/:id", box.RemoveContainer)
+		api.GET("/containers/:id/logs", box.GetLogs)
 	}
 
 	r.GET("/", func(c *gin.Context) {

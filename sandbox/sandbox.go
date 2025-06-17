@@ -14,6 +14,10 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+const (
+	defaultImage = "lscr.io/linuxserver/webtop:latest"
+)
+
 type Sandbox struct {
 	client *client.Client
 }
@@ -52,7 +56,7 @@ func (s *Sandbox) CreateContainer(c *gin.Context) {
 
 	// Default to webtop if no image specified
 	if req.Image == "" {
-		req.Image = "lscr.io/linuxserver/webtop:latest"
+		req.Image = defaultImage
 	}
 
 	// Pull image first
