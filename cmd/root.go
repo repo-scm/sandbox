@@ -13,8 +13,8 @@ var (
 )
 
 var rootCmd = &cobra.Command{
-	Use:     "playground",
-	Short:   "git workspace playground",
+	Use:     "sandbox",
+	Short:   "git workspace sandbox",
 	Version: BuildTime + "-" + CommitID,
 }
 

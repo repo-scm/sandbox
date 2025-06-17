@@ -1,4 +1,4 @@
-module github.com/repo-scm/playground
+module github.com/repo-scm/sandbox
 
 go 1.24.3
 

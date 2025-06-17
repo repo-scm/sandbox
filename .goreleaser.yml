@@ -1,6 +1,6 @@
 ---
 builds:
-  - id: playground
+  - id: sandbox
     env:
       - CGO_ENABLED=0
     goos:
@@ -9,10 +9,10 @@ builds:
       - amd64
     dir: .
     main: main.go
-    binary: playground
+    binary: sandbox
     flags:
       - -trimpath
-    ldflags: -s -w -X github.com/repo-scm/playground/cmd.BuildTime={{.Date}} -X github.com/repo-scm/playground/cmd.CommitID={{.ShortCommit}}
+    ldflags: -s -w -X github.com/repo-scm/sandbox/cmd.BuildTime={{.Date}} -X github.com/repo-scm/sandbox/cmd.CommitID={{.ShortCommit}}
 
 changelog:
   sort: asc

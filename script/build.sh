@@ -2,8 +2,8 @@
 
 buildTime=$(date +%FT%T%z)
 commitID=`git rev-parse --short=7 HEAD`
-ldflags="-s -w -X github.com/repo-scm/playground/cmd.BuildTime=$buildTime -X github.com/repo-scm/playground/cmd.CommitID=$commitID"
-target="playground"
+ldflags="-s -w -X github.com/repo-scm/sandbox/cmd.BuildTime=$buildTime -X github.com/repo-scm/sandbox/cmd.CommitID=$commitID"
+target="sandbox"
 
 go env -w GOPROXY=https://goproxy.cn,direct
 

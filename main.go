@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/repo-scm/playground/cmd"
+	"github.com/repo-scm/sandbox/cmd"
 )
 
 func main() {

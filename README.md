@@ -1,15 +1,15 @@
-# playground
+# sandbox
 
-[![Build Status](https://github.com/repo-scm/playground/workflows/ci/badge.svg?branch=main&event=push)](https://github.com/repo-scm/playground/actions?query=workflow%3Aci)
-[![Go Report Card](https://goreportcard.com/badge/github.com/repo-scm/playground)](https://goreportcard.com/report/github.com/repo-scm/playground)
-[![License](https://img.shields.io/github/license/repo-scm/playground.svg)](https://github.com/repo-scm/playground/blob/main/LICENSE)
-[![Tag](https://img.shields.io/github/tag/repo-scm/playground.svg)](https://github.com/repo-scm/playground/tags)
+[![Build Status](https://github.com/repo-scm/sandbox/workflows/ci/badge.svg?branch=main&event=push)](https://github.com/repo-scm/sandbox/actions?query=workflow%3Aci)
+[![Go Report Card](https://goreportcard.com/badge/github.com/repo-scm/sandbox)](https://goreportcard.com/report/github.com/repo-scm/sandbox)
+[![License](https://img.shields.io/github/license/repo-scm/sandbox.svg)](https://github.com/repo-scm/sandbox/blob/main/LICENSE)
+[![Tag](https://img.shields.io/github/tag/repo-scm/sandbox.svg)](https://github.com/repo-scm/sandbox/tags)
 
 
 
 ## Introduction
 
-git workspace playground
+git workspace sandbox
 
 
 
@@ -17,7 +17,7 @@ git workspace playground
 
 ```bash
 make build
-./bin/playground serve --address ":9090"
+./bin/sandbox serve --address ":9090"
 ```
 
 

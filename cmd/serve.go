@@ -10,7 +10,7 @@ import (
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
 
-	"github.com/repo-scm/playground/sandbox"
+	"github.com/repo-scm/sandbox/sandbox"
 )
 
 var (
