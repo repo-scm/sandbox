@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"io"
 	"net/http"
+	"strconv"
 
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/image"
@@ -15,7 +16,22 @@ import (
 )
 
 const (
-	defaultImage = "lscr.io/linuxserver/webtop:ubuntu-kde"
+	containerPort = 3000
+	defaultImage  = "lscr.io/linuxserver/webtop:ubuntu-kde"
+	shmSize       = 1073741824 // 1GB
+	stopTimeout   = 30
+)
+
+var (
+	envVariables = []string{
+		"CUSTOM_USER=admin",
+		"PASSWORD=admin",
+		"PUID=1000",
+		"PGID=1000",
+		"TZ=UTC",
+		"SUBFOLDER=/",
+		"KEYBOARD=en-us-qwerty",
+	}
 )
 
 type Sandbox struct {
@@ -75,15 +91,8 @@ func (s *Sandbox) CreateContainer(c *gin.Context) {
 	}
 
 	// Setup environment variables
-	env := []string{
-		"PUID=1000",
-		"PGID=1000",
-		"TZ=UTC",
-		"SUBFOLDER=/",
-		"KEYBOARD=en-us-qwerty",
-	}
 	for key, value := range req.Environment {
-		env = append(env, fmt.Sprintf("%s=%s", key, value))
+		envVariables = append(envVariables, fmt.Sprintf("%s=%s", key, value))
 	}
 
 	// Setup port bindings
@@ -91,17 +100,17 @@ func (s *Sandbox) CreateContainer(c *gin.Context) {
 	portBindings := nat.PortMap{}
 
 	// Default webtop port
-	containerPort := "3000/tcp"
-	exposedPorts[nat.Port(containerPort)] = struct{}{}
+	port := fmt.Sprintf("%d/tcp", containerPort)
+	exposedPorts[nat.Port(port)] = struct{}{}
 
-	if req.Ports["3000"] != "" {
-		hostPort := req.Ports["3000"]
-		portBindings[nat.Port(containerPort)] = []nat.PortBinding{
+	if req.Ports[strconv.Itoa(containerPort)] != "" {
+		hostPort := req.Ports[strconv.Itoa(containerPort)]
+		portBindings[nat.Port(port)] = []nat.PortBinding{
 			{HostPort: hostPort},
 		}
 	} else {
 		// Auto-assign port
-		portBindings[nat.Port(containerPort)] = []nat.PortBinding{
+		portBindings[nat.Port(port)] = []nat.PortBinding{
 			{HostPort: "0"},
 		}
 	}
@@ -109,14 +118,14 @@ func (s *Sandbox) CreateContainer(c *gin.Context) {
 	// Container configuration
 	config := &container.Config{
 		Image:        req.Image,
-		Env:          env,
+		Env:          envVariables,
 		ExposedPorts: exposedPorts,
 	}
 
 	hostConfig := &container.HostConfig{
 		PortBindings: portBindings,
 		SecurityOpt:  []string{"seccomp=unconfined"},
-		ShmSize:      1073741824, // 1GB
+		ShmSize:      shmSize,
 		Mounts: []mount.Mount{
 			{
 				Type:   mount.TypeBind,
@@ -169,7 +178,7 @@ func (s *Sandbox) ListContainers(c *gin.Context) {
 				portStr := fmt.Sprintf("%d:%d", port.PublicPort, port.PrivatePort)
 				info.Ports = append(info.Ports, portStr)
 				// Generate access URL for webtop containers
-				if port.PrivatePort == 3000 {
+				if port.PrivatePort == containerPort {
 					info.URL = fmt.Sprintf("http://localhost:%d", port.PublicPort)
 				}
 			}
@@ -194,7 +203,7 @@ func (s *Sandbox) StartContainer(c *gin.Context) {
 
 func (s *Sandbox) StopContainer(c *gin.Context) {
 	containerID := c.Param("id")
-	timeout := 30
+	timeout := stopTimeout
 
 	err := s.client.ContainerStop(context.Background(), containerID, container.StopOptions{Timeout: &timeout})
 	if err != nil {
