@@ -15,7 +15,7 @@ import (
 )
 
 const (
-	defaultImage = "lscr.io/linuxserver/webtop:latest"
+	defaultImage = "lscr.io/linuxserver/webtop:ubuntu-kde"
 )
 
 type Sandbox struct {
