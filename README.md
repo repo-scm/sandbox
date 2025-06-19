@@ -16,8 +16,7 @@ git workspace sandbox
 ## Usage
 
 ```bash
-make build
-./bin/sandbox serve --address ":9090"
+sandbox serve --address ":9090"
 ```
 
 
