@@ -16,7 +16,7 @@ git workspace sandbox
 ## Usage
 
 ```bash
-sandbox serve --address ":9090"
+sandbox serve [--address string]
 ```
 
 
