@@ -29,6 +29,8 @@ jobs:
       - uses: actions/checkout@v2
         with:
           fetch-depth: 1
+      - name: Setup environment file
+        run: cp sandbox/.env.example sandbox/.env
       - name: Run lint
         uses: golangci/golangci-lint-action@v3
         timeout-minutes: 10
