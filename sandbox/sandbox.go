@@ -1,11 +1,14 @@
 package sandbox
 
 import (
+	"bufio"
 	"context"
+	_ "embed"
 	"fmt"
 	"io"
 	"net/http"
 	"strconv"
+	"strings"
 
 	"github.com/docker/docker/api/types/container"
 	"github.com/docker/docker/api/types/image"
@@ -22,17 +25,8 @@ const (
 	stopTimeout   = 30
 )
 
-var (
-	envVariables = []string{
-		"CUSTOM_USER=admin",
-		"PASSWORD=admin",
-		"PUID=1000",
-		"PGID=1000",
-		"TZ=UTC",
-		"SUBFOLDER=/",
-		"KEYBOARD=en-us-qwerty",
-	}
-)
+//go:embed .env
+var envFile string
 
 type Sandbox struct {
 	client *client.Client
@@ -90,7 +84,14 @@ func (s *Sandbox) CreateContainer(c *gin.Context) {
 		return
 	}
 
-	// Setup environment variables
+	// Load environment variables from embedded .env file
+	envVariables, err := loadEnvVariables()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": fmt.Sprintf("failed to load environment variables: %v", err)})
+		return
+	}
+
+	// Setup additional environment variables from request
 	for key, value := range req.Environment {
 		envVariables = append(envVariables, fmt.Sprintf("%s=%s", key, value))
 	}
@@ -251,4 +252,25 @@ func (s *Sandbox) GetLogs(c *gin.Context) {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": err.Error()})
 		return
 	}
+}
+
+func loadEnvVariables() ([]string, error) {
+	var envVars []string
+
+	scanner := bufio.NewScanner(strings.NewReader(envFile))
+
+	for scanner.Scan() {
+		line := strings.TrimSpace(scanner.Text())
+		// Skip empty lines and comments
+		if line == "" || strings.HasPrefix(line, "#") {
+			continue
+		}
+		envVars = append(envVars, line)
+	}
+
+	if err := scanner.Err(); err != nil {
+		return nil, fmt.Errorf("error scanning .env file: %w", err)
+	}
+
+	return envVars, nil
 }

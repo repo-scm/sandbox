@@ -21,6 +21,24 @@ sandbox serve [--address string]
 
 
 
+## Settings
+
+[sandbox](https://github.com/repo-scm/sandbox) parameters can be set in the file `sandbox/.env`.
+
+An example of settings can be found in [sandbox/.env.example](https://github.com/repo-scm/sandbox/blob/main/sandbox/.env.example).
+
+```
+CUSTOM_USER=admin
+PASSWORD=admin
+PUID=1000
+PGID=1000
+TZ=UTC
+SUBFOLDER=/
+KEYBOARD=en-us-qwerty
+```
+
+
+
 ## Screenshot
 
 ### Create

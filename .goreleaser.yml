@@ -1,4 +1,8 @@
 ---
+before:
+  hooks:
+    - cp sandbox/.env.example sandbox/.env
+
 builds:
   - id: sandbox
     env:
