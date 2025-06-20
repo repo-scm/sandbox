@@ -2,7 +2,9 @@ package cmd
 
 import (
 	"context"
+	"embed"
 	"fmt"
+	"html/template"
 	"net/http"
 	"os"
 
@@ -12,6 +14,9 @@ import (
 
 	"github.com/repo-scm/sandbox/sandbox"
 )
+
+//go:embed templates/*
+var templatesFS embed.FS
 
 var (
 	serveAddress string
@@ -46,8 +51,8 @@ func runServe(_ context.Context, address string) error {
 
 	r := gin.Default()
 
-	r.LoadHTMLGlob("templates/*")
-	r.Static("/static", "./static")
+	tmpl := template.Must(template.New("").ParseFS(templatesFS, "templates/*"))
+	r.SetHTMLTemplate(tmpl)
 
 	api := r.Group("/api")
 	{
