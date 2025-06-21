@@ -39,6 +39,22 @@ KEYBOARD=en-us-qwerty
 
 
 
+## Deploy
+
+### 1. Deploy on Railway
+
+[![railway](https://railway.app/button.svg)](https://railway.app/template/HLP0Ub?referralCode=jch2ME)
+
+### 2. Deploy to Render
+
+[![render](https://render.com/images/deploy-to-render-button.svg)](https://render.com/deploy?repo=https://github.com/repo-scm/sandbox)
+
+### 3. Deploy with Vercel
+
+[![vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/repo-scm/sandbox&repository-name=sandbox)
+
+
+
 ## Screenshot
 
 ### Create
